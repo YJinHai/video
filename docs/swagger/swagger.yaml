@@ -1,0 +1,303 @@
+basePath: /
+definitions:
+  model.Comment:
+    properties:
+      addTime:
+        type: string
+      content:
+        type: string
+      id:
+        type: string
+      userID:
+        type: string
+      videoID:
+        type: string
+    type: object
+  model.User:
+    properties:
+      id:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  model.Video:
+    properties:
+      addTime:
+        type: string
+      displayCtime:
+        type: string
+      id:
+        type: string
+      title:
+        type: string
+      userID:
+        type: string
+    type: object
+host: 127.0.0.1:8010
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample server Petstore server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Swagger Example API
+  version: "1.0"
+paths:
+  /comment/{id}:
+    get:
+      consumes:
+      - application/json
+      description: GetComment
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Comment'
+            type: object
+      security:
+      - Bearer: []
+      summary: GetComment
+      tags:
+      - Comment
+  /user:
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: CreateUser
+      parameters:
+      - description: name
+        in: formData
+        name: username
+        required: true
+        type: string
+      - description: user pwd
+        in: formData
+        name: pwd
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200": {}
+      summary: CreateUser
+      tags:
+      - User
+  /user/{uid}:
+    get:
+      consumes:
+      - application/json
+      description: GetUser
+      parameters:
+      - description: nameID
+        in: path
+        name: uid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.User'
+            type: object
+      security:
+      - Bearer: []
+      summary: Get
+      tags:
+      - User
+  /user/{uid}/comment:
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: CreateComment
+      parameters:
+      - description: uid
+        in: path
+        name: uid
+        required: true
+        type: string
+      - description: uid
+        in: path
+        name: vid
+        required: true
+        type: string
+      - description: content
+        in: formData
+        name: content
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200": {}
+      summary: CreateComment
+      tags:
+      - Comment
+  /user/{uid}/comments:
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: GetCommentsList
+      parameters:
+      - description: nameID
+        in: path
+        name: uid
+        required: true
+        type: integer
+      - description: page
+        in: formData
+        name: page
+        required: true
+        type: integer
+      - description: limit
+        in: formData
+        name: limit
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Comment'
+            type: object
+      summary: GetCommentsList
+      tags:
+      - User
+  /user/{uid}/video:
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: CreateVideo
+      parameters:
+      - description: uid
+        in: path
+        name: uid
+        required: true
+        type: string
+      - description: name
+        in: formData
+        name: title
+        required: true
+        type: string
+      - description: display_ctime
+        in: formData
+        name: dc
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200": {}
+      summary: CreateVideo
+      tags:
+      - Video
+  /user/{uid}/video/{vid}/comments:
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: VideoCommentsList
+      parameters:
+      - description: userID
+        in: path
+        name: uid
+        required: true
+        type: integer
+      - description: videoID
+        in: path
+        name: vid
+        required: true
+        type: integer
+      - description: page
+        in: formData
+        name: page
+        required: true
+        type: integer
+      - description: limit
+        in: formData
+        name: limit
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Comment'
+            type: object
+      summary: VideoCommentsList
+      tags:
+      - Video
+  /user/{uid}/videos:
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: GetVideosList
+      parameters:
+      - description: nameID
+        in: path
+        name: uid
+        required: true
+        type: integer
+      - description: page
+        in: formData
+        name: page
+        required: true
+        type: integer
+      - description: limit
+        in: formData
+        name: limit
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Video'
+            type: object
+      summary: GetVideosList
+      tags:
+      - User
+  /user/{uid}/videos/{vid-id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: nameID
+        in: path
+        name: uname
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Video'
+            type: object
+      security:
+      - Bearer: []
+      summary: GetVideo
+      tags:
+      - Video
+swagger: "2.0"

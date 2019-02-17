@@ -1,0 +1,61 @@
+package main
+
+import (
+	"fmt"
+	"github.com/gin-gonic/gin"
+	"net/http"
+)
+
+const DOWNLOADS_PATH = "videos/"
+
+func main() {
+	router := gin.Default()
+	//router.Static("/", "./public")
+	router.POST("/upload", func(c *gin.Context) {
+
+		fmt.Print("zhel")
+		// Source
+		file, err := c.FormFile("file")
+		if err != nil {
+			fmt.Print("error")
+			c.JSON(http.StatusBadRequest, fmt.Sprintf("get form err: %s", err.Error()))
+			return
+		}
+
+		if err := c.SaveUploadedFile(file, file.Filename); err != nil {
+			c.String(http.StatusBadRequest, fmt.Sprintf("upload file err: %s", err.Error()))
+			return
+		}
+
+		//c.String(http.StatusOK, fmt.Sprintf("File %s uploaded successfully with fields name=%s and email=%s.", file.Filename))
+		c.JSON(http.StatusOK, file.Filename)
+	})
+	router.GET("/videos/:vid", func(c *gin.Context) {
+
+		filename := c.Param("vid")
+		//c.File("./videos")
+		vl := "./videos/" + filename
+
+		//video, _ := os.Open(vl)
+		c.File(vl)
+
+		//c.FileAttachment("./videos", vid)
+		fmt.Print(filename)
+		fmt.Sprintf("attachment; filename=\"%s\"", filename)
+		c.Header("Content-Type", "video/mp4")
+		c.Header("content-disposition", fmt.Sprintf("attachment; filename=\"%s\"", filename))
+		//c.Data(200,  "video/mp4", )
+	})
+	router.GET("/download",func(c *gin.Context){
+		c.Header("Content-Type", "application/x-zip-compressed")
+		c.File("./tt")
+
+
+
+	})
+
+	router.Run(":8011")
+}
+
+
+
